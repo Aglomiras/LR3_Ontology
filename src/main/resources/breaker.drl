@@ -1,0 +1,46 @@
+import org.example.Equipments.Equipment
+import org.example.Equipments.TransformerClass
+import org.example.Equipments.BreakerClass
+import org.example.Equipments.BusClass
+import org.example.Equipments.LineClass
+import org.example.Equipments.GenerateClass
+
+import org.example.EquipmentsType.TransformerType
+import org.example.EquipmentsType.LineType
+import org.example.EquipmentsType.GenerateType
+import org.example.EquipmentsType.EquipType
+import org.example.EquipmentsType.BusType
+import org.example.EquipmentsType.BreakerType
+import org.example.Protections.ProtectionAndAutomatic
+
+dialect "mvel"
+rule "breaker1_drl"
+when
+breaker: BreakerClass(breakerType == BreakerType.INPUT)
+then
+breaker.addProtection(ProtectionAndAutomatic.APV);
+end
+
+rule "breaker2_drl"
+when
+breaker: BreakerClass(breakerType == BreakerType.SECTION)
+then
+breaker.addProtection(ProtectionAndAutomatic.APV);
+breaker.addProtection(ProtectionAndAutomatic.AVR);
+end
+
+rule "breaker3_drl"
+when
+breaker: BreakerClass(breakerType == BreakerType.CONNECT)
+then
+breaker.addProtection(ProtectionAndAutomatic.APV);
+breaker.addProtection(ProtectionAndAutomatic.AChR);
+end
+
+rule "breaker4_drl"
+when
+breaker: BreakerClass(breakerType == BreakerType.GENERATE)
+then
+breaker.addProtection(ProtectionAndAutomatic.APV);
+breaker.addProtection(ProtectionAndAutomatic.Sync);
+end

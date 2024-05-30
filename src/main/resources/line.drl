@@ -1,0 +1,68 @@
+import org.example.Equipments.Equipment
+import org.example.Equipments.TransformerClass
+import org.example.Equipments.BreakerClass
+import org.example.Equipments.BusClass
+import org.example.Equipments.LineClass
+import org.example.Equipments.GenerateClass
+
+import org.example.EquipmentsType.TransformerType
+import org.example.EquipmentsType.LineType
+import org.example.EquipmentsType.GenerateType
+import org.example.EquipmentsType.EquipType
+import org.example.EquipmentsType.BusType
+import org.example.EquipmentsType.BreakerType
+import org.example.Protections.ProtectionAndAutomatic
+
+dialect "mvel"
+//----------------------------------------------------------------------------------------------------------------------
+//ЛИНИИ
+//----------------------------------------------------------------------------------------------------------------------
+rule "line1_drl"
+when
+line: LineClass(voltageClass < 110 && lineType == LineType.ONE_CIRCUIT && length <= 50)
+then
+line.addProtection(ProtectionAndAutomatic.DZL);
+end
+
+rule "line2_drl"
+when
+line: LineClass(voltageClass > 110 && lineType == LineType.ONE_CIRCUIT)
+then
+line.addProtection(ProtectionAndAutomatic.DFZ);
+end
+
+rule "line3_drl"
+when
+line: LineClass(lineType == LineType.TWO_CIRCUIT)
+then
+line.addProtection(ProtectionAndAutomatic.DFZ);
+line.addProtection(ProtectionAndAutomatic.TRANSVER_PROT);
+end
+
+rule "line4_drl"
+when
+line: LineClass(lineType == LineType.ONE_CIRCUIT)
+then
+line.addProtection(ProtectionAndAutomatic.MTZ);
+end
+
+rule "line5_drl"
+when
+line: LineClass(lineType == LineType.TWO_CIRCUIT)
+then
+line.addProtection(ProtectionAndAutomatic.MTZ_WITH_PON);
+end
+
+rule "line6_drl"
+when
+line: LineClass(voltageClass >= 110)
+then
+line.addProtection(ProtectionAndAutomatic.TNZNP);
+end
+
+rule "line7_drl"
+when
+line: LineClass(voltageClass < 110)
+then
+line.addProtection(ProtectionAndAutomatic.ZOZZ);
+end

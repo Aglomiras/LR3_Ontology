@@ -1,0 +1,81 @@
+import org.example.Equipments.Equipment
+import org.example.Equipments.TransformerClass
+import org.example.Equipments.BreakerClass
+import org.example.Equipments.BusClass
+import org.example.Equipments.LineClass
+import org.example.Equipments.GenerateClass
+
+import org.example.EquipmentsType.TransformerType
+import org.example.EquipmentsType.LineType
+import org.example.EquipmentsType.GenerateType
+import org.example.EquipmentsType.EquipType
+import org.example.EquipmentsType.BusType
+import org.example.EquipmentsType.BreakerType
+import org.example.Protections.ProtectionAndAutomatic
+
+dialect "mvel"
+rule "transformer1_drl"
+when
+transformer: TransformerClass(power <= 160 && 35 <= voltageClass && voltageClass < 220 && !parallel)
+then
+transformer.addProtection(ProtectionAndAutomatic.DZT_ONE_SETS);
+end
+
+rule "transformer2_drl"
+when
+transformer: TransformerClass(power >= 160 && 35 <= voltageClass && voltageClass < 220 && parallel)
+then
+transformer.addProtection(ProtectionAndAutomatic.DZT_TWO_SETS);
+end
+
+rule "transformer3_drl"
+when
+transformer: TransformerClass(power >= 160 && 35 <= voltageClass && voltageClass < 220 && !parallel)
+then
+transformer.addProtection(ProtectionAndAutomatic.DZT_ONE_SETS);
+end
+
+rule "transformer4_drl"
+when
+transformer: TransformerClass(power >= 160 && voltageClass >= 330 && !parallel && transformerType == TransformerType.AUTO_TRANS)
+then
+transformer.addProtection(ProtectionAndAutomatic.DZT_TWO_SETS);
+end
+
+rule "transformer5_drl"
+when
+transformer: TransformerClass(power >= 160 && voltageClass < 330 && !parallel && transformerType == TransformerType.AUTO_TRANS)
+then
+transformer.addProtection(ProtectionAndAutomatic.DZT_ONE_SETS);
+end
+
+rule "transformer6_drl"
+when
+transformer: TransformerClass(40 <= power && power < 200  && !parallel)
+then
+transformer.addProtection(ProtectionAndAutomatic.MTZ);
+transformer.addProtection(ProtectionAndAutomatic.TO);
+end
+
+rule "transformer7_drl"
+when
+transformer: TransformerClass(40 <= power && power < 200  && parallel)
+then
+transformer.addProtection(ProtectionAndAutomatic.MTZ_WITH_PON);
+transformer.addProtection(ProtectionAndAutomatic.TO);
+end
+
+rule "transformer8_drl"
+when
+transformer: TransformerClass(power >= 200)
+then
+transformer.addProtection(ProtectionAndAutomatic.DZ);
+transformer.addProtection(ProtectionAndAutomatic.TO);
+end
+
+rule "transformer9_drl"
+when
+transformer: TransformerClass(voltageClass >= 110)
+then
+transformer.addProtection(ProtectionAndAutomatic.ARKT);
+end

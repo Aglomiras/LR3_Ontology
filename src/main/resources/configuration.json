@@ -1,0 +1,256 @@
+[
+  {
+    "type": "TRANSFORMER",
+    "name": "T1",
+    "voltageClass": "110",
+    "power": "160",
+    "parallel": "true",
+    "transformerType": "TREE_WINDING"
+  },
+  {
+    "type": "TRANSFORMER",
+    "name": "T2",
+    "voltageClass": "110",
+    "power": "160",
+    "parallel": "true",
+    "transformerType": "TREE_WINDING"
+  },
+  {
+    "type": "TRANSFORMER",
+    "name": "T3",
+    "voltageClass": "110",
+    "power": "100",
+    "parallel": "false",
+    "transformerType": "TWO_WINDING"
+  },
+  {
+    "type": "TRANSFORMER",
+    "name": "AT1",
+    "voltageClass": "220",
+    "power": "250",
+    "parallel": "false",
+    "transformerType": "AUTO_TRANS"
+  },
+  {
+    "type": "TRANSFORMER",
+    "name": "AT2",
+    "voltageClass": "500",
+    "power": "250",
+    "parallel": "false",
+    "transformerType": "AUTO_TRANS"
+  },
+  {
+    "type": "LINE",
+    "name": "L1",
+    "voltageClass": "220",
+    "length": 40,
+    "lineType": "TWO_CIRCUIT"
+  },
+  {
+    "type": "LINE",
+    "name": "L2",
+    "length": 70,
+    "voltageClass": "220",
+    "lineType": "TWO_CIRCUIT"
+  },
+  {
+    "type": "LINE",
+    "name": "L3",
+    "length": 140,
+    "voltageClass": "110",
+    "lineType": "ONE_CIRCUIT"
+  },
+  {
+    "type": "LINE",
+    "name": "L4",
+    "length": 140,
+    "voltageClass": "110",
+    "lineType": "ONE_CIRCUIT"
+  },
+  {
+    "type": "LINE",
+    "name": "L5",
+    "length": 80,
+    "voltageClass": "110",
+    "lineType": "ONE_CIRCUIT"
+  },
+  {
+    "type": "LINE",
+    "name": "L6",
+    "length": 30,
+    "voltageClass": "110",
+    "lineType": "ONE_CIRCUIT"
+  },
+  {
+    "type": "LINE",
+    "name": "L7",
+    "length": 30,
+    "voltageClass": "35",
+    "lineType": "ONE_CIRCUIT"
+  },
+  {
+    "type": "LINE",
+    "name": "L8",
+    "length": 30,
+    "voltageClass": "35",
+    "lineType": "ONE_CIRCUIT"
+  },
+  {
+    "type": "BUS",
+    "name": "B1",
+    "voltageClass": "220",
+    "busType": "QUAD"
+  },
+  {
+    "type": "BUS",
+    "name": "B2",
+    "voltageClass": "110",
+    "busType": "PARTITIONED"
+  },
+  {
+    "type": "BUS",
+    "name": "B3",
+    "voltageClass": "35",
+    "busType": "PARTITIONED_TWO"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q1",
+    "voltageClass": "110",
+    "position": "true",
+    "breakerType": "CONNECT"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q2",
+    "voltageClass": "110",
+    "position": "true",
+    "breakerType": "CONNECT"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q3",
+    "voltageClass": "110",
+    "position": "true",
+    "breakerType": "CONNECT"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q4",
+    "voltageClass": "110",
+    "position": "true",
+    "breakerType": "CONNECT"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q5",
+    "voltageClass": "110",
+    "position": "true",
+    "breakerType": "INPUT"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q6",
+    "voltageClass": "110",
+    "position": "true",
+    "breakerType": "INPUT"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q7",
+    "voltageClass": "220",
+    "position": "true",
+    "breakerType": "INPUT"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q8",
+    "voltageClass": "220",
+    "position": "true",
+    "breakerType": "INPUT"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q9",
+    "voltageClass": "35",
+    "position": "true",
+    "breakerType": "INPUT"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q10",
+    "voltageClass": "35",
+    "position": "true",
+    "breakerType": "INPUT"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q11",
+    "voltageClass": "35",
+    "position": "true",
+    "breakerType": "CONNECT"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q12",
+    "voltageClass": "35",
+    "position": "true",
+    "breakerType": "CONNECT"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q13",
+    "voltageClass": "35",
+    "position": "true",
+    "breakerType": "CONNECT"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q14",
+    "voltageClass": "35",
+    "position": "true",
+    "breakerType": "CONNECT"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q15",
+    "voltageClass": "35",
+    "position": "false",
+    "breakerType": "SECTION"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q16",
+    "voltageClass": "35",
+    "position": "false",
+    "breakerType": "SECTION"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q17",
+    "voltageClass": "35",
+    "position": "true",
+    "breakerType": "GENERATE"
+  },
+  {
+    "type": "BREAKER",
+    "name": "Q18",
+    "voltageClass": "35",
+    "position": "true",
+    "breakerType": "GENERATE"
+  },
+  {
+    "type": "GENERATE",
+    "name": "G1",
+    "voltageClass": "6",
+    "position": "true",
+    "generateType": "GEN_ONE"
+  },
+  {
+    "type": "GENERATE",
+    "name": "G2",
+    "voltageClass": "35",
+    "position": "true",
+    "generateType": "GEN_ONE"
+  }
+]

@@ -1,0 +1,67 @@
+import org.example.Equipments.Equipment
+import org.example.Equipments.TransformerClass
+import org.example.Equipments.BreakerClass
+import org.example.Equipments.BusClass
+import org.example.Equipments.LineClass
+import org.example.Equipments.GenerateClass
+
+import org.example.EquipmentsType.TransformerType
+import org.example.EquipmentsType.LineType
+import org.example.EquipmentsType.GenerateType
+import org.example.EquipmentsType.EquipType
+import org.example.EquipmentsType.BusType
+import org.example.EquipmentsType.BreakerType
+import org.example.Protections.ProtectionAndAutomatic
+
+dialect "mvel"
+rule "bus1_drl"
+when
+bus: BusClass(busType == BusType.ONE && voltageClass <= 110)
+then
+bus.addProtection(ProtectionAndAutomatic.LZSh);
+bus.addProtection(ProtectionAndAutomatic.TO);
+bus.addProtection(ProtectionAndAutomatic.MTZ);
+end
+
+rule "bus2_drl"
+when
+bus: BusClass(busType == BusType.ONE && voltageClass > 110)
+then
+bus.addProtection(ProtectionAndAutomatic.DZSh);
+bus.addProtection(ProtectionAndAutomatic.TO);
+bus.addProtection(ProtectionAndAutomatic.MTZ);
+end
+
+rule "bus3_drl"
+when
+bus: BusClass(busType == BusType.QUAD)
+then
+bus.addProtection(ProtectionAndAutomatic.DZO);
+bus.addProtection(ProtectionAndAutomatic.TO);
+bus.addProtection(ProtectionAndAutomatic.MTZ);
+end
+
+rule "bus4_drl"
+when
+bus: BusClass(busType == BusType.PARTITIONED)
+then
+bus.addProtection(ProtectionAndAutomatic.LZSh);
+bus.addProtection(ProtectionAndAutomatic.TO);
+bus.addProtection(ProtectionAndAutomatic.MTZ);
+end
+
+rule "bus5_drl"
+when
+bus: BusClass(busType == BusType.PARTITIONED_TWO)
+then
+bus.addProtection(ProtectionAndAutomatic.DZSh);
+bus.addProtection(ProtectionAndAutomatic.TO);
+bus.addProtection(ProtectionAndAutomatic.MTZ);
+end
+
+rule "bus6_drl"
+when
+bus: BusClass(voltageClass >= 110)
+then
+bus.addProtection(ProtectionAndAutomatic.TZNP);
+end

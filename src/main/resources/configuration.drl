@@ -1,0 +1,254 @@
+import org.example.Equipments.Equipment
+import org.example.Equipments.TransformerClass
+import org.example.Equipments.BreakerClass
+import org.example.Equipments.BusClass
+import org.example.Equipments.LineClass
+import org.example.Equipments.GenerateClass
+
+import org.example.EquipmentsType.TransformerType
+import org.example.EquipmentsType.LineType
+import org.example.EquipmentsType.GenerateType
+import org.example.EquipmentsType.EquipType
+import org.example.EquipmentsType.BusType
+import org.example.EquipmentsType.BreakerType
+import org.example.Protections.ProtectionAndAutomatic
+
+dialect "mvel"
+//----------------------------------------------------------------------------------------------------------------------
+//Описание правил добавления защит на объекты ПС
+//----------------------------------------------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------------------------------------------------
+//ТРАНСФОРМАТОР
+//----------------------------------------------------------------------------------------------------------------------
+rule "transformer1_drl"
+when
+transformer: TransformerClass(power <= 160 && 35 <= voltageClass && voltageClass < 220 && !parallel)
+then
+transformer.addProtection(ProtectionAndAutomatic.DZT_ONE_SETS);
+end
+
+rule "transformer2_drl"
+when
+transformer: TransformerClass(power >= 160 && 35 <= voltageClass && voltageClass < 220 && parallel)
+then
+transformer.addProtection(ProtectionAndAutomatic.DZT_TWO_SETS);
+end
+
+rule "transformer3_drl"
+when
+transformer: TransformerClass(power >= 160 && 35 <= voltageClass && voltageClass < 220 && !parallel)
+then
+transformer.addProtection(ProtectionAndAutomatic.DZT_ONE_SETS);
+end
+
+rule "transformer4_drl"
+when
+transformer: TransformerClass(power >= 160 && voltageClass >= 330 && !parallel && transformerType == TransformerType.AUTO_TRANS)
+then
+transformer.addProtection(ProtectionAndAutomatic.DZT_TWO_SETS);
+end
+
+rule "transformer5_drl"
+when
+transformer: TransformerClass(power >= 160 && voltageClass < 330 && !parallel && transformerType == TransformerType.AUTO_TRANS)
+then
+transformer.addProtection(ProtectionAndAutomatic.DZT_ONE_SETS);
+end
+
+rule "transformer6_drl"
+when
+transformer: TransformerClass(40 <= power && power < 200  && !parallel)
+then
+transformer.addProtection(ProtectionAndAutomatic.MTZ);
+transformer.addProtection(ProtectionAndAutomatic.TO);
+end
+
+rule "transformer7_drl"
+when
+transformer: TransformerClass(40 <= power && power < 200  && parallel)
+then
+transformer.addProtection(ProtectionAndAutomatic.MTZ_WITH_PON);
+transformer.addProtection(ProtectionAndAutomatic.TO);
+end
+
+rule "transformer8_drl"
+when
+transformer: TransformerClass(power >= 200)
+then
+transformer.addProtection(ProtectionAndAutomatic.DZ);
+transformer.addProtection(ProtectionAndAutomatic.TO);
+end
+
+rule "transformer9_drl"
+when
+transformer: TransformerClass(voltageClass >= 110)
+then
+transformer.addProtection(ProtectionAndAutomatic.ARKT);
+end
+
+//----------------------------------------------------------------------------------------------------------------------
+//ШИНЫ
+//----------------------------------------------------------------------------------------------------------------------
+rule "bus1_drl"
+when
+bus: BusClass(busType == BusType.ONE && voltageClass <= 110)
+then
+bus.addProtection(ProtectionAndAutomatic.LZSh);
+bus.addProtection(ProtectionAndAutomatic.TO);
+bus.addProtection(ProtectionAndAutomatic.MTZ);
+end
+
+rule "bus2_drl"
+when
+bus: BusClass(busType == BusType.ONE && voltageClass > 110)
+then
+bus.addProtection(ProtectionAndAutomatic.DZSh);
+bus.addProtection(ProtectionAndAutomatic.TO);
+bus.addProtection(ProtectionAndAutomatic.MTZ);
+end
+
+rule "bus3_drl"
+when
+bus: BusClass(busType == BusType.QUAD)
+then
+bus.addProtection(ProtectionAndAutomatic.DZO);
+bus.addProtection(ProtectionAndAutomatic.TO);
+bus.addProtection(ProtectionAndAutomatic.MTZ);
+end
+
+rule "bus4_drl"
+when
+bus: BusClass(busType == BusType.PARTITIONED)
+then
+bus.addProtection(ProtectionAndAutomatic.LZSh);
+bus.addProtection(ProtectionAndAutomatic.TO);
+bus.addProtection(ProtectionAndAutomatic.MTZ);
+end
+
+rule "bus5_drl"
+when
+bus: BusClass(busType == BusType.PARTITIONED_TWO)
+then
+bus.addProtection(ProtectionAndAutomatic.DZSh);
+bus.addProtection(ProtectionAndAutomatic.TO);
+bus.addProtection(ProtectionAndAutomatic.MTZ);
+end
+
+rule "bus6_drl"
+when
+bus: BusClass(voltageClass >= 110)
+then
+bus.addProtection(ProtectionAndAutomatic.TZNP);
+end
+
+//----------------------------------------------------------------------------------------------------------------------
+//Выключатели
+//----------------------------------------------------------------------------------------------------------------------
+rule "breaker1_drl"
+when
+breaker: BreakerClass(breakerType == BreakerType.INPUT)
+then
+breaker.addProtection(ProtectionAndAutomatic.APV);
+end
+
+rule "breaker2_drl"
+when
+breaker: BreakerClass(breakerType == BreakerType.SECTION)
+then
+breaker.addProtection(ProtectionAndAutomatic.APV);
+breaker.addProtection(ProtectionAndAutomatic.AVR);
+end
+
+rule "breaker3_drl"
+when
+breaker: BreakerClass(breakerType == BreakerType.CONNECT)
+then
+breaker.addProtection(ProtectionAndAutomatic.APV);
+breaker.addProtection(ProtectionAndAutomatic.AChR);
+end
+
+rule "breaker4_drl"
+when
+breaker: BreakerClass(breakerType == BreakerType.GENERATE)
+then
+breaker.addProtection(ProtectionAndAutomatic.APV);
+breaker.addProtection(ProtectionAndAutomatic.Sync);
+end
+
+//----------------------------------------------------------------------------------------------------------------------
+//ГЕНЕРАТОРЫ
+//----------------------------------------------------------------------------------------------------------------------
+rule "generate1_drl"
+when
+generate: GenerateClass(voltageClass <= 10)
+then
+generate.addProtection(ProtectionAndAutomatic.DZG_ONE_SETS);
+generate.addProtection(ProtectionAndAutomatic.TO);
+generate.addProtection(ProtectionAndAutomatic.MTZ);
+generate.addProtection(ProtectionAndAutomatic.ZOZZ);
+end
+
+rule "generate2_drl"
+when
+generate: GenerateClass(voltageClass > 10)
+then
+generate.addProtection(ProtectionAndAutomatic.DZG_TWO_SETS);
+generate.addProtection(ProtectionAndAutomatic.ARV);
+generate.addProtection(ProtectionAndAutomatic.TO);
+generate.addProtection(ProtectionAndAutomatic.DZ);
+generate.addProtection(ProtectionAndAutomatic.ZOZZ);
+end
+
+//----------------------------------------------------------------------------------------------------------------------
+//ЛИНИИ
+//----------------------------------------------------------------------------------------------------------------------
+rule "line1_drl"
+when
+line: LineClass(voltageClass < 110 && lineType == LineType.ONE_CIRCUIT && length <= 50)
+then
+line.addProtection(ProtectionAndAutomatic.DZL);
+end
+
+rule "line2_drl"
+when
+line: LineClass(voltageClass > 110 && lineType == LineType.ONE_CIRCUIT)
+then
+line.addProtection(ProtectionAndAutomatic.DFZ);
+end
+
+rule "line3_drl"
+when
+line: LineClass(lineType == LineType.TWO_CIRCUIT)
+then
+line.addProtection(ProtectionAndAutomatic.DFZ);
+line.addProtection(ProtectionAndAutomatic.TRANSVER_PROT);
+end
+
+rule "line4_drl"
+when
+line: LineClass(lineType == LineType.ONE_CIRCUIT)
+then
+line.addProtection(ProtectionAndAutomatic.MTZ);
+end
+
+rule "line5_drl"
+when
+line: LineClass(lineType == LineType.TWO_CIRCUIT)
+then
+line.addProtection(ProtectionAndAutomatic.MTZ_WITH_PON);
+end
+
+rule "line6_drl"
+when
+line: LineClass(voltageClass >= 110)
+then
+line.addProtection(ProtectionAndAutomatic.TNZNP);
+end
+
+rule "line7_drl"
+when
+line: LineClass(voltageClass < 110)
+then
+line.addProtection(ProtectionAndAutomatic.ZOZZ);
+end

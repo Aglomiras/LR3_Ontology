@@ -1,0 +1,36 @@
+import org.example.Equipments.Equipment
+import org.example.Equipments.TransformerClass
+import org.example.Equipments.BreakerClass
+import org.example.Equipments.BusClass
+import org.example.Equipments.LineClass
+import org.example.Equipments.GenerateClass
+
+import org.example.EquipmentsType.TransformerType
+import org.example.EquipmentsType.LineType
+import org.example.EquipmentsType.GenerateType
+import org.example.EquipmentsType.EquipType
+import org.example.EquipmentsType.BusType
+import org.example.EquipmentsType.BreakerType
+import org.example.Protections.ProtectionAndAutomatic
+
+dialect "mvel"
+rule "generate1_drl"
+when
+generate: GenerateClass(voltageClass <= 10)
+then
+generate.addProtection(ProtectionAndAutomatic.DZG_ONE_SETS);
+generate.addProtection(ProtectionAndAutomatic.TO);
+generate.addProtection(ProtectionAndAutomatic.MTZ);
+generate.addProtection(ProtectionAndAutomatic.ZOZZ);
+end
+
+rule "generate2_drl"
+when
+generate: GenerateClass(voltageClass > 10)
+then
+generate.addProtection(ProtectionAndAutomatic.DZG_TWO_SETS);
+generate.addProtection(ProtectionAndAutomatic.ARV);
+generate.addProtection(ProtectionAndAutomatic.TO);
+generate.addProtection(ProtectionAndAutomatic.DZ);
+generate.addProtection(ProtectionAndAutomatic.ZOZZ);
+end
